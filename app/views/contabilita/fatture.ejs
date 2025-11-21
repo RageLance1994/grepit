@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grepit | <%= pageTitle %></title>
+  <link href="/assets/css/terminal.css" rel="stylesheet">
+  <link href="/assets/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>
+  <div class="wrapper-v j-center a-center nopadding">
+    <div class="wrapper-h cg-1618 j-center a-start">
+      <aside class="wrapper-v j-start a-start nopadding sidebar mobilehide mw-min-content blurred" style="max-width: min-content;">
+        <div class="wrapper-h h-min-content nowrap j-start cg-1618 a-center bordered-bottom thick">
+          <img src="logo_placeholder.png" alt="Logo" class="navbar-brand">
+          <h1 class="medium"><%= companyName %></h1>
+        </div>
+        <% sidebarSections.forEach((section) => { %>
+          <a class="wrapper-h cg-1618 j-sb sidebar-item <%= activePath === section.href ? 'bordered-bottom' : '' %>" href="<%= section.href %>">
+            <i class="<%= section.icon %>"></i>
+            <p class="fwb medium w-100 text-start"><%= section.name %></p>
+            <p></p>
+          </a>
+        <% }) %>
+      </aside>
+
+      <div class="wrapper-v j-start rg-8p a-start nopadding" style="width: 100%;">
+        <header class="wrapper-v blurred h-min-content">
+          <div class="wrapper-h j-sb nopadding">
+            <div class="wrapper-h j-start a-start nopadding noscroll ticker-window">
+              <div class="wrapper-v j-start a-start nopadding ticker-track" style="transition:.3s; min-height: <%=breadcrumbs.length*100 %>%;" id="breadcrumb-scroller">
+                <% breadcrumbs.forEach((crumb) => { %>
+                  <div class="wrapper-h j-start a-center nopadding">
+                    <a href="<%= crumb.href %>" class="fwb"><%= crumb.name %></a>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+            <div class="wrapper-h j-end a-center">
+              <a class="btn">
+                <i class="fa fa-user"></i>
+                <p><%= userName %></p>
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <main class="wrapper-v blurred scrollable-y" style="width: 100%;">
+          <div class="wrapper-v rg-8p nopadding" style="padding: 1rem;">
+            <div class="wrapper-h j-center cg-1618 h-min-content-mc a-center nopadding">
+              <% cards.forEach((card) => { %>
+                <div class="wrapper-v j-start a-start bordered-grid" style="min-width: 220px;">
+                  <div class="wrapper-h j-start nopadding">
+                    <h1 class="bordered-bottom thick"><%= card.title %></h1>
+                  </div>
+                  <div class="wrapper-h j-sb nopadding">
+                    <h1 class="big fwb"><%= card.value %></h1>
+                  </div>
+                  <p class="<%= card.trendClass %>"><%= card.trend %></p>
+                </div>
+              <% }) %>
+            </div>
+
+            <div class="wrapper-h cg-1618 j-start a-start nopadding" style="flex-wrap: wrap;">
+              <section class="wrapper-v bordered-grid" style="flex: 1; min-width: 320px;">
+                <div class="wrapper-h j-start nopadding bordered-bottom thick">
+                  <h2 class="medium">Nuova fattura</h2>
+                </div>
+                <form id="invoice-form" class="wrapper-v rg-8p">
+                  <div class="wrapper-h cg-1618">
+                    <label class="w-100">Numero
+                      <input class="w-100" type="text" name="number" value="<%= invoiceDefaults.number %>" required>
+                    </label>
+                    <label class="w-100">Cliente
+                      <input class="w-100" type="text" name="customer" value="<%= invoiceDefaults.customer %>" required>
+                    </label>
+                  </div>
+                  <div class="wrapper-h cg-1618">
+                    <label class="w-100">Data
+                      <input class="w-100" type="date" name="date" value="<%= invoiceDefaults.date %>" required>
+                    </label>
+                    <label class="w-100">Scadenza
+                      <input class="w-100" type="date" name="dueDate" value="<%= invoiceDefaults.dueDate %>" required>
+                    </label>
+                  </div>
+                  <div class="wrapper-h cg-1618">
+                    <label class="w-100">Importo (€)
+                      <input class="w-100" type="number" step="0.01" name="amount" value="<%= invoiceDefaults.amount %>" required>
+                    </label>
+                    <label class="w-100">IVA (%)
+                      <input class="w-100" type="number" step="1" name="vat" value="<%= invoiceDefaults.vat %>" required>
+                    </label>
+                  </div>
+                  <label class="w-100">Descrizione
+                    <textarea class="w-100" name="description" rows="3"><%= invoiceDefaults.description %></textarea>
+                  </label>
+                  <div class="wrapper-h j-end cg-1618">
+                    <button class="btn" type="submit">Salva bozza</button>
+                    <button class="btn" type="button" id="invoice-send">Invia</button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="wrapper-v bordered-grid" style="flex: 1; min-width: 320px;">
+                <div class="wrapper-h j-start nopadding bordered-bottom thick">
+                  <h2 class="medium">Fatture recenti</h2>
+                </div>
+                <div class="wrapper-v rg-8p">
+                  <% invoices.forEach((invoice) => { %>
+                    <div class="wrapper-v bordered-grid" style="padding: .75rem;">
+                      <div class="wrapper-h j-sb a-center">
+                        <p class="fwb"><%= invoice.number %></p>
+                        <span class="<%= invoice.status === 'Scaduta' ? 'error' : 'success' %>"><%= invoice.status %></span>
+                      </div>
+                      <p><i class="fa fa-user"></i> <%= invoice.customer %></p>
+                      <div class="wrapper-h j-sb">
+                        <span><i class="fa fa-calendar"></i> <%= invoice.date %> → <%= invoice.dueDate %></span>
+                        <span class="fwb"><%= invoice.amount %></span>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/assets/js/contabilita/fatture.js"></script>
+</body>
+</html>
