@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grepit | <%= pageTitle || 'Cashflow' %></title>
+    <link href="/assets/css/terminal.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <%
+        const navItems = sidebarSections || [];
+        const breadcrumbItems = (breadcrumbs && breadcrumbs.length) ? breadcrumbs : navItems;
+        const cardData = cards || [];
+        const headerUser = typeof userName !== 'undefined' ? userName : 'Nome e cognome';
+        const company = typeof companyName !== 'undefined' ? companyName : 'Nome Azienda';
+        const active = typeof activePath !== 'undefined' ? activePath : '/contabilita/cashflow';
+        const chartData = typeof chart !== 'undefined' ? chart : { labels: [], inflows: [], outflows: [] };
+        const rows = forecast || [];
+    %>
+    <div class="wrapper-v j-center a-center nopadding">
+        <div class="wrapper-h cg-1618 j-center a-center">
+            <div class="wrapper-v j-start a-start nopadding sidebar mobilehide mw-min-content blurred"
+                style="max-width: min-content;">
+                <div class="wrapper-h h-min-content nowrap j-start cg-1618 a-center bordered-bottom thick">
+                    <img src="/logo_placeholder.png" class="navbar-brand">
+                    <h1 class="medium"><%= company %></h1>
+                </div>
+                <% navItems.forEach((section)=> { %>
+                    <div class="wrapper-v h-min-content j-start a-start nopadding">
+                        <a class="wrapper-h cg-1618 j-sb sidebar-item" href="<%= section.href %>" style="text-decoration:none; color: inherit;">
+                            <i class="<%= section.icon %>"></i>
+                            <p class="fwb medium w-100 text-start" style="<%= section.href === active ? 'text-decoration: underline;' : '' %>">
+                                <%= section.name%>
+                            </p>
+                            <p></p>
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="wrapper-v j-start rg-8p a-start nopadding">
+                <div class="wrapper-v blurred h-min-content">
+                    <div class="wrapper-h j-sb nopadding">
+                        <div class="wrapper-h j-start a-start nopadding noscroll ticker-window">
+                            <div class="wrapper-v j-start a-start nopadding ticker-track"
+                                style="transition:.3s; min-height: <%=breadcrumbItems.length*100 %>%;"
+                                id="breadcrumb-scroller">
+                                <%breadcrumbItems.forEach((s)=> { %>
+                                    <div class="wrapper-h j-start a-center nopadding">
+                                        <% if(s.href){ %>
+                                            <a href="<%= s.href %>"><%= s.name %></a>
+                                        <% } else { %>
+                                            <%= s.name %>
+                                        <% } %>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                        <div class="wrapper-h j-end a-center">
+                            <a class="btn">
+                                <i class="fa fa-user"></i>
+                                <p><%= headerUser %></p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="wrapper-v blurred scrollable-y">
+                    <div class="wrapper-v nopadding" style="min-height: 200%;">
+                        <div class="wrapper-v rg-8p nopadding j-start a-start" style="max-height: 50%;">
+                            <div class="wrapper-h j-center cg-1618 h-min-content-mc a-center nopadding">
+                                <% cardData.forEach((card)=> { %>
+                                <div class="wrapper-v j-start a-start bordered-grid">
+                                    <div class="wrapper-h j-start nopadding">
+                                        <h1 class="bordered-bottom thick"><%= card.title %></h1>
+                                    </div>
+                                    <div class="wrapper-h j-sb nopadding">
+                                        <h1 class="big fwb"><%= card.value %></h1>
+                                    </div>
+                                    <p class="<%= card.trendClass %>"><%= card.trend %></p>
+
+                                </div>
+                                <% }) %>
+                            </div>
+                            <div class="wrapper-h j-center a-start cg-1618">
+                                <div class="wrapper-v j-start a-start bordered-grid" style="min-width: 360px;">
+                                    <div class="wrapper-h j-start nopadding">
+                                        <h1 class="bordered-bottom thick">Flussi mensili</h1>
+                                    </div>
+                                    <canvas id="cashflow-chart" height="200"></canvas>
+                                </div>
+                                <div class="wrapper-v j-start a-start bordered-grid" style="min-width: 300px;">
+                                    <div class="wrapper-h j-start nopadding">
+                                        <h1 class="bordered-bottom thick">Previsioni trimestrali</h1>
+                                    </div>
+                                    <div class="wrapper-v j-start a-start rg-8p">
+                                        <% rows.forEach((row)=> { %>
+                                            <div class="wrapper-h j-sb a-center bordered-bottom">
+                                                <p class="fwb"><%= row.month %></p>
+                                                <div class="wrapper-v a-end">
+                                                    <p class="small">Entrate: <span class="success"><%= row.inflow %></span></p>
+                                                    <p class="small">Uscite: <span class="error"><%= row.outflow %></span></p>
+                                                    <p class="small fwb">Saldo: <%= row.balance %></p>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wrapper-v j-start a-start bordered-grid">
+                                <div class="wrapper-h j-sb a-center bordered-bottom">
+                                    <h1 class="bordered-bottom thick">Strategie di cassa</h1>
+                                    <p class="small">Azioni proposte</p>
+                                </div>
+                                <div class="wrapper-v j-start a-start rg-8p">
+                                    <div class="wrapper-h j-sb a-center bordered-bottom">
+                                        <p>Anticipa incassi fatture PA</p>
+                                        <p class="success">+€ 18.000</p>
+                                    </div>
+                                    <div class="wrapper-h j-sb a-center bordered-bottom">
+                                        <p>Rinegozia canone ERP</p>
+                                        <p class="warning">Risparmio stimato € 1.250</p>
+                                    </div>
+                                    <div class="wrapper-h j-sb a-center">
+                                        <p>Programma rate fornitore hardware</p>
+                                        <p class="error">Impatto mese -€ 6.000</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script type="application/json" id="cashflow-chart-data"><%= JSON.stringify(chartData) %></script>
+    <script type="module" src="/assets/js/contabilita/cashflow.js"></script>
+</body>
+
+</html>
