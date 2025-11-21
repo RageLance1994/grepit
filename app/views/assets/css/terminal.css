@@ -528,7 +528,7 @@ a[href] {
     --glass-surface-strong: rgba(255, 255, 255, 0.2);
     --glass-highlight: rgba(255, 255, 255, 0.58);
     --glass-shadow: rgba(13, 20, 37, 0.28);
-    --grid-color: rgba(148, 163, 184, 0.35);
+    --grid-color: rgba(203, 213, 226, 0.35);
     --tv-green: #22d3a3;
     --tv-red: #fb7185;
     --tv-green-faded: rgba(34, 211, 163, 0.55);
@@ -1241,6 +1241,27 @@ canvas {
     max-width: 100vw;
 }
 
+.nav-item{
+    border: 1px solid transparent; 
+    border-radius: 4px;
+    cursor: pointer;
+    transition:.382s;
+    padding: 4px 8px 4px 12px !important;
+}
+
+.nav-item:hover{
+    scale:103.82%;
+}
+
+.nav-item p{
+    transition:.3s;
+}
+
+.nav-item:hover p{
+    border-bottom:1px solid var(--border-subtle) !important;
+    
+    
+}
 
 
 .footer .footer-column:not(:first-child) {
@@ -1892,6 +1913,12 @@ canvas {
 
 .sidebar-item:hover {
     background-color: var(--nav-hover);
+
+}
+
+.sidebar-item:hover p{
+    scale:103.82%;
+    transform:translateX(4px);
 }
 
 .sidebar-switch {
@@ -1909,6 +1936,10 @@ canvas {
 
 .form-logo {
     max-height: 32px;
+}
+
+.sidebar{
+    transition:.5s !important;
 }
 
 .sidebar-brand {
@@ -1933,11 +1964,52 @@ canvas {
 .sidebar-item {
     cursor: pointer;
     border-bottom: 1px solid var(--grid-color);
-    transition: .08s;
+    transition: .10s !important;
     user-select: none;
-
 }
 
+.sidebar:hover{
+    transition:.3s;
+}
+
+.sidebar h1,
+.sidebar p{
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.sidebar:not(:hover) p,
+.sidebar:not(:hover) h1{
+    max-width: 0px;
+    opacity: 0%;
+    pointer-events: none;
+}
+
+.sidebar i {
+    margin-left: 4px;
+}
+
+
+.sidebar:not(:hover) .wrapper-h{
+    
+    column-gap: 0px;
+}
+
+.sidebar:not(:hover) .wrapper-h.cg-1618{
+    column-gap: 0px !important;
+}
+
+.sidebar i{
+    transition:.3s;
+}
+
+.sidebar i{
+    font-size: 1.382em;
+}
+
+.sidebar.shrunk{
+    max-width: min-content;
+}
 .sidebar-item.active {
     background-color: var(--main);
     border-right: 1px solid var(--main) !important;
@@ -2189,6 +2261,9 @@ div:has(.slideable-h) {
 
 }
 
+.breadcrumb{
+    max-height: 100%;
+}
 
 @keyframes pulse {
     0% {
@@ -3058,8 +3133,6 @@ input.otp {
 
 .nopadding {
     padding: 0px !important;
-    width: 100% !important;
-    height: 100% !important;
 }
 
 
@@ -3200,6 +3273,20 @@ input.otp {
 
 .noscroll {
     overflow: hidden !important;
+}
+
+.ticker-window {
+    overflow: hidden !important;
+    height: var(--ticker-window-height, 1.5em);
+    max-height: var(--ticker-window-height, 1.5em);
+    align-items: flex-start !important;
+    padding: 0 !important;
+}
+
+.wrapper-v.ticker-track {
+    height: auto;
+    padding: 0 !important;
+    gap: 0;
 }
 
 .simtitle {
@@ -4863,6 +4950,8 @@ input[type="range"]::-moz-range-thumb {
 
 }
 
+
+
 .oneclicktrading.hidden .lots {
     display: none;
 
@@ -4871,6 +4960,10 @@ input[type="range"]::-moz-range-thumb {
 
 .h-min-content {
     height: auto;
+}
+
+.h-min-content-mc{
+    height: min-content !important;
 }
 
 .b-bottom {
@@ -5023,6 +5116,9 @@ p.danger {
     width: max-content !important;
 }
 
+.mw-min-content{
+    min-width: min-content;
+}
 
 
 .h-min-content {
