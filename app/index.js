@@ -52,10 +52,11 @@ app.use("/assets", express.static(path.join(__dirname, 'views/assets')));
 app.use("/scripts", express.static(path.join(__dirname, '/node_modules')));
 
 var routes = [
-  
+
   { location: '/', mw: require('./routes/_home') },
   { location: '/dashboard', mw: require('./routes/_dashboard') },
-  
+  { location: '/contabilita', mw: require('./routes/_contabilita') },
+
 
 ];
 

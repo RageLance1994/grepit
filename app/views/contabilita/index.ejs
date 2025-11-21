@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grepit | <%= pageTitle || 'Contabilità' %></title>
+    <link href="/assets/css/terminal.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <% 
+        var sidebarSections = typeof sidebarSections !== 'undefined' ? sidebarSections : [
+            {name: 'Home' ,icon:'fa fa-home'}, {name: 'Contabilità' , icon:'fa fa-calculator'},
+            {name: 'Fatture' , icon:'fa fa-file'}, {name: 'Adempimenti' , icon:'fa fa-gavel'}, {name: 'Clienti', icon:'fa fa-handshake-o'},
+            {name: 'Magazzino' , icon:'fa fa-dropbox'},
+        ];
+        var breadcrumbItems = (typeof breadcrumbs !== 'undefined' && breadcrumbs.length) ? breadcrumbs : sidebarSections;
+        var cardData = (typeof cards !== 'undefined' && cards.length) ? cards : [
+            { title: 'KPI Principale', value: '0,00€', trend: '+0,00%', trendClass: 'success' },
+            { title: 'KPI Secondario', value: '0,00€', trend: '+0,00%', trendClass: 'success' },
+            { title: 'KPI Terziario', value: '0,00€', trend: '+0,00%', trendClass: 'success' },
+            { title: 'KPI Extra', value: '0,00€', trend: '+0,00%', trendClass: 'success' },
+        ];
+        var headerUser = typeof userName !== 'undefined' ? userName : 'Nome e cognome';
+        var company = typeof companyName !== 'undefined' ? companyName : 'Nome Azienda';
+    %>
+    <div class="wrapper-v j-center a-center nopadding">
+        <div class="wrapper-h cg-1618 j-center a-center">
+            <div class="wrapper-v j-start a-start nopadding sidebar mobilehide mw-min-content blurred"
+                style="max-width: min-content;">
+                <div class="wrapper-h h-min-content nowrap j-start cg-1618 a-center bordered-bottom thick">
+                    <img src="logo_placeholder.png" class="navbar-brand">
+                    <h1 class="medium"><%= company %></h1>
+                </div>
+                    <% sidebarSections.forEach((section)=> {%>
+                        <div class="wrapper-v h-min-content j-start a-start nopadding">
+                            <div class="wrapper-h cg-1618 j-sb sidebar-item">
+                                <i class="<%= section.icon %>"></i>
+                                <p class="fwb medium w-100 text-start">
+                                    <%= section.name%>
+                                </p>
+                                <p></p>
+                            </div>
+                        </div>
+                        <%})%>
+            </div>
+            <div class="wrapper-v j-start rg-8p a-start nopadding">
+                <div class="wrapper-v blurred h-min-content">
+                    <div class="wrapper-h j-sb nopadding">
+                        <div class="wrapper-h j-start a-start nopadding noscroll ticker-window">
+                            <div class="wrapper-v j-start a-start nopadding ticker-track"
+                                style="transition:.3s; min-height: <%=breadcrumbItems.length*100 %>%;"
+                                id="breadcrumb-scroller">
+                                <%breadcrumbItems.forEach((s)=> {%>
+                                    <div class="wrapper-h j-start a-center nopadding">
+                                        <%=s.name%>
+                                    </div>
+                                    <%})%>
+                            </div>
+                        </div>
+                        <div class="wrapper-h j-end a-center">
+                            <a class="btn">
+                                <i class="fa fa-user"></i>
+                                <p><%= headerUser %></p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="wrapper-v blurred scrollable-y">
+                    <div class="wrapper-v nopadding" style="min-height: 200%;">
+                        <div class="wrapper-v rg-8p nopadding j-start a-start" style="max-height: 50%;">
+                            <div class="wrapper-h j-center cg-1618 h-min-content-mc a-center nopadding">
+                                <% cardData.forEach((card)=> { %>
+                                <div class="wrapper-v j-start a-start bordered-grid">
+                                    <div class="wrapper-h j-start nopadding">
+                                        <h1 class="bordered-bottom thick"><%= card.title %></h1>
+                                    </div>
+                                    <div class="wrapper-h j-sb nopadding">
+                                        <h1 class="big fwb"><%= card.value %></h1>
+                                    </div>
+                                    <p class="<%= card.trendClass %>"><%= card.trend %></p>
+
+                                </div>
+                                <% }) %>
+
+                            </div>
+                            <div class="wrapper-h j-center a-center cg-1618"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script type="module" src="/assets/js/contabilita/index.js"></script>
+</body>
+
+</html>
